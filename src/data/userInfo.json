@@ -1,0 +1,9 @@
+{
+  "name": "John Doe",
+  "title": "Software Engineer",
+  "skills": [
+    "JavaScript",
+    "Vue.js",
+    "PDF Generation"
+  ]
+} 
