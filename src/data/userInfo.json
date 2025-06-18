@@ -5,5 +5,13 @@
     "JavaScript",
     "Vue.js",
     "PDF Generation"
-  ]
+  ],
+  "contact": {
+    "location": "San Francisco, CA",
+    "phone": "(123) 456-7890",
+    "email": "johndoe@example.com",
+    "linkedin": "linkedin.com/in/johndoe",
+    "github": "github.com/johndoe",
+    "website": "johndoe.com"
+  }
 } 
