@@ -19,6 +19,9 @@ export function generatePDF() {
   const contactFontSize = 12;
   const contactYOffset = -4;
 
+  const summaryFontSize = 14;
+  const summaryYOffset = 3;
+
   // Name
   const nameY = pageMarginY + nameFontSize + nameYOffset;
   doc.setFontSize(nameFontSize);
@@ -53,6 +56,13 @@ export function generatePDF() {
   const contactLineY = contactY + contactLines.length * lineSpacing;
   doc.setLineWidth(0.5);
   doc.line(pageMarginX, contactLineY, pageWidth - pageMarginX, contactLineY);
+
+  // Summary
+  const summaryY = contactLineY + summaryYOffset;
+  doc.setFontSize(summaryFontSize);
+  doc.setFont('helvetica', 'italic');
+  const summaryTextWidth = doc.getTextWidth(userInfo.summary);
+  doc.text(userInfo.summary, (pageWidth - summaryTextWidth) / 2, summaryY + lineSpacing);
 
   return doc.output('datauristring');
 } 

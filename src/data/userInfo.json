@@ -1,6 +1,7 @@
 {
   "name": "John Doe",
   "title": "Software Engineer",
+  "summary": "I am a software engineer with a passion for building scalable and efficient systems.",
   "skills": [
     "JavaScript",
     "Vue.js",
