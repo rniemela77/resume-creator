@@ -1,12 +1,6 @@
 {
   "name": "John Doe",
   "title": "Software Engineer",
-  "summary": "I am a software engineer with a passion for building scalable and efficient systems.",
-  "skills": [
-    "JavaScript",
-    "Vue.js",
-    "PDF Generation"
-  ],
   "contact": {
     "location": "San Francisco, CA",
     "phone": "(123) 456-7890",
@@ -14,5 +8,26 @@
     "linkedin": "linkedin.com/in/johndoe",
     "github": "github.com/johndoe",
     "website": "johndoe.com"
+  },
+  "summary": "I am a software engineer with a passion for building scalable and efficient systems.",
+  "skills": {
+    "languages": [
+        "JavaScript (ES6+)",
+        "TypeScript",
+        "CSS3",
+        "HTML5"
+    ],
+    "frameworks": [
+        "Vue.js",
+        "Nuxt.js",
+        "Bootstrap"
+    ],
+    "tools": [
+        "Git",
+        "Jest",
+        "CI/CD",
+        "Cypress",
+        "RESTful APIs"
+    ]
   }
 } 
