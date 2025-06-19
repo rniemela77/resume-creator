@@ -84,17 +84,11 @@ export function generatePDF() {
   doc.text(userInfo.summary, (pageWidth - summaryTextWidth) / 2, summaryY + lineSpacing);
 
   // Skills title
-  const skillsTitleY = summaryY + summaryFontSize + skillsTitleYOffset;
-  doc.setFontSize(skillsTitleFontSize);
-  doc.setFont('helvetica', 'bold');
-  const skillsTitleTextWidth = doc.getTextWidth('Skills:');
-  doc.text('SKILLS', (pageWidth - skillsTitleTextWidth) / 2, skillsTitleY);
-  doc.setFont('helvetica', 'normal');
+  const skillsTitleY = getNextSectionY(summaryY, summaryFontSize, skillsTitleYOffset);
+  renderSectionTitle(doc, 'SKILLS', skillsTitleY, pageWidth, skillsTitleFontSize);
 
   // Skills title line
-  const skillsTitleLineY = skillsTitleY + skillsFontSize + skillsTitleLineYOffset;
-  doc.setLineWidth(0.5);
-  doc.line(pageMarginX, skillsTitleLineY, pageWidth - pageMarginX, skillsTitleLineY);
+  drawHorizontalLine(doc, skillsTitleY + skillsFontSize + skillsTitleLineYOffset, pageWidth, pageMarginX);
 
   // Skills list (languages, frameworks, tools)
   const skillsListY = skillsTitleY + skillsFontSize + skillsYOffset;
@@ -120,21 +114,17 @@ export function generatePDF() {
   doc.setFont('helvetica', 'normal');
   doc.text(userInfo.skills.tools.join(', '), pageMarginX + toolsLabelWidth, skillsListY + 2 * lineSpacing);
 
-  // Work Experience title
-  const workExperienceTitleY = skillsListY + 3 * lineSpacing;
-  doc.setFontSize(skillsTitleFontSize);
-  doc.setFont('helvetica', 'bold');
-  const workExperienceTitleLabel = "PROFESSIONAL EXPERIENCE";
-  const workExperienceTitleTextWidth = doc.getTextWidth(workExperienceTitleLabel);
-  doc.text(workExperienceTitleLabel, (pageWidth - workExperienceTitleTextWidth) / 2, workExperienceTitleY);
+  // Adjust the Y position for the next section after skills
+  const skillsListEndY = skillsListY + 3 * lineSpacing;
 
-  // Work Experience title line
-  const workExperienceTitleLineY = workExperienceTitleY + skillsFontSize + skillsTitleLineYOffset;
-  doc.setLineWidth(0.5);
-  doc.line(pageMarginX, workExperienceTitleLineY, pageWidth - pageMarginX, workExperienceTitleLineY);
+  // Professional Experience title
+  const workExperienceTitleY = getNextSectionY(skillsListEndY, lineSpacing, workExperienceYOffset);
+  renderSectionTitle(doc, 'PROFESSIONAL EXPERIENCE', workExperienceTitleY, pageWidth, skillsTitleFontSize);
+
+  drawHorizontalLine(doc, workExperienceTitleY + skillsFontSize + skillsTitleLineYOffset, pageWidth, pageMarginX);
 
   // Work experience
-  let workExperienceY = workExperienceTitleLineY + workExperienceLineYOffset;
+  let workExperienceY = workExperienceTitleY + workExperienceLineYOffset;
   doc.setFontSize(workExperienceFontSize);
   doc.setFont('helvetica', 'normal');
   userInfo.workExperience.forEach((experience, index) => {
@@ -163,22 +153,15 @@ export function generatePDF() {
   });
 
   // Education title
-  const educationTitleY = workExperienceY + 2 * lineSpacing + educationYOffset;
-  doc.setFontSize(skillsTitleFontSize);
-  doc.setFont('helvetica', 'bold');
-  const educationTitleLabel = "EDUCATION";
-  const educationTitleTextWidth = doc.getTextWidth(educationTitleLabel);
-  doc.text(educationTitleLabel, (pageWidth - educationTitleTextWidth) / 2, educationTitleY);
+  const educationTitleY = getNextSectionY(workExperienceY, 2 * lineSpacing, educationYOffset);
+  renderSectionTitle(doc, 'EDUCATION', educationTitleY, pageWidth, skillsTitleFontSize);
 
-  // Education title line
-  const educationTitleLineY = educationTitleY + skillsFontSize + skillsTitleLineYOffset;
-  doc.setLineWidth(0.5);
-  doc.line(pageMarginX, educationTitleLineY, pageWidth - pageMarginX, educationTitleLineY);
+  drawHorizontalLine(doc, educationTitleY + skillsFontSize + skillsTitleLineYOffset, pageWidth, pageMarginX);
 
   // Education details
   doc.setFontSize(workExperienceFontSize);
   doc.setFont('helvetica', 'normal');
-  let educationY = educationTitleLineY + workExperienceLineYOffset;
+  let educationY = educationTitleY + workExperienceLineYOffset;
   if (Array.isArray(userInfo.education)) {
     userInfo.education.forEach((edu) => {
       const institution = `${edu.institution}, ${edu.location}`;
@@ -206,22 +189,15 @@ export function generatePDF() {
   }
 
   // Certifications title
-  const certificationsTitleY = educationY + 2 * lineSpacing + educationYOffset;
-  doc.setFontSize(skillsTitleFontSize);
-  doc.setFont('helvetica', 'bold');
-  const certificationsTitleLabel = "CERTIFICATIONS";
-  const certificationsTitleTextWidth = doc.getTextWidth(certificationsTitleLabel);
-  doc.text(certificationsTitleLabel, (pageWidth - certificationsTitleTextWidth) / 2, certificationsTitleY);
+  const certificationsTitleY = getNextSectionY(educationY, 2 * lineSpacing, educationYOffset);
+  renderSectionTitle(doc, 'CERTIFICATIONS', certificationsTitleY, pageWidth, skillsTitleFontSize);
 
-  // Certifications title line
-  const certificationsTitleLineY = certificationsTitleY + skillsFontSize + skillsTitleLineYOffset;
-  doc.setLineWidth(0.5);
-  doc.line(pageMarginX, certificationsTitleLineY, pageWidth - pageMarginX, certificationsTitleLineY);
+  drawHorizontalLine(doc, certificationsTitleY + skillsFontSize + skillsTitleLineYOffset, pageWidth, pageMarginX);
 
   // Certifications details
   doc.setFontSize(workExperienceFontSize);
   doc.setFont('helvetica', 'normal');
-  let certificationsY = certificationsTitleLineY + workExperienceLineYOffset;
+  let certificationsY = certificationsTitleY + workExperienceLineYOffset;
   if (Array.isArray(userInfo.certifications)) {
     userInfo.certifications.forEach((cert) => {
       const certDetails = `${cert.name}, ${cert.institution}`;
@@ -235,4 +211,23 @@ export function generatePDF() {
   }
 
   return doc.output('datauristring');
+}
+
+// Helper function to render section titles
+function renderSectionTitle(doc, title, yPosition, pageWidth, fontSize) {
+  doc.setFontSize(fontSize);
+  doc.setFont('helvetica', 'bold');
+  const titleTextWidth = doc.getTextWidth(title);
+  doc.text(title, (pageWidth - titleTextWidth) / 2, yPosition);
+}
+
+// Helper function to draw horizontal lines
+function drawHorizontalLine(doc, yPosition, pageWidth, pageMarginX) {
+  doc.setLineWidth(0.5);
+  doc.line(pageMarginX, yPosition, pageWidth - pageMarginX, yPosition);
+}
+
+// Helper function for spacing between sections
+function getNextSectionY(currentY, lineSpacing, yOffset) {
+  return currentY + lineSpacing + yOffset;
 } 
