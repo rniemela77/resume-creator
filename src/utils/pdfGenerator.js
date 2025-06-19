@@ -100,25 +100,30 @@ export function generatePDF() {
   const languagesLabelWidth = doc.getTextWidth(languagesLabel);
   doc.text(languagesLabel, pageMarginX, skillsListY + lineSpacing);
   doc.setFont("helvetica", "normal");
-  doc.text(userInfo.skills.languages.join(", "), pageMarginX + languagesLabelWidth, skillsListY + lineSpacing);
+  const languagesText = doc.splitTextToSize(userInfo.skills.languages.join(", "), maxWidth - languagesLabelWidth);
+  languagesText.forEach((line, index) => {
+    doc.text(line, pageMarginX + languagesLabelWidth, skillsListY + lineSpacing + index * lineSpacing);
+  });
 
   const frameworksLabel = "Frameworks: ";
   doc.setFont("helvetica", "bold");
   const frameworksLabelWidth = doc.getTextWidth(frameworksLabel);
-  doc.text(frameworksLabel, pageMarginX, skillsListY + 2 * lineSpacing);
+  doc.text(frameworksLabel, pageMarginX, skillsListY + (languagesText.length + 1) * lineSpacing);
   doc.setFont("helvetica", "normal");
-  doc.text(
-    userInfo.skills.frameworks.join(", "),
-    pageMarginX + frameworksLabelWidth,
-    skillsListY + 2 * lineSpacing
-  );    
+  const frameworksText = doc.splitTextToSize(userInfo.skills.frameworks.join(", "), maxWidth - frameworksLabelWidth);
+  frameworksText.forEach((line, index) => {
+    doc.text(line, pageMarginX + frameworksLabelWidth, skillsListY + (languagesText.length + 1) * lineSpacing + index * lineSpacing);
+  });
 
   const toolsLabel = "Tools: ";
   doc.setFont("helvetica", "bold");
   const toolsLabelWidth = doc.getTextWidth(toolsLabel);
-  doc.text(toolsLabel, pageMarginX, skillsListY + 3 * lineSpacing);
+  doc.text(toolsLabel, pageMarginX, skillsListY + (languagesText.length + frameworksText.length + 1) * lineSpacing);
   doc.setFont("helvetica", "normal");
-  doc.text(userInfo.skills.tools.join(', '), pageMarginX + toolsLabelWidth, skillsListY + 3 * lineSpacing);
+  const toolsText = doc.splitTextToSize(userInfo.skills.tools.join(", "), maxWidth - toolsLabelWidth);
+  toolsText.forEach((line, index) => {
+    doc.text(line, pageMarginX + toolsLabelWidth, skillsListY + (languagesText.length + frameworksText.length + 1) * lineSpacing + index * lineSpacing);
+  });
 
     // Professional Experience section
 
