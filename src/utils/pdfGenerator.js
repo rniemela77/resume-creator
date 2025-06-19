@@ -121,7 +121,7 @@ export function generatePDF() {
   const workExperienceTitleY = skillsListY + 3 * lineSpacing;
   doc.setFontSize(skillsTitleFontSize);
   doc.setFont('helvetica', 'bold');
-  const workExperienceTitleLabel = "WORK EXPERIENCE";
+  const workExperienceTitleLabel = "PROFESSIONAL EXPERIENCE";
   const workExperienceTitleTextWidth = doc.getTextWidth(workExperienceTitleLabel);
   doc.text(workExperienceTitleLabel, (pageWidth - workExperienceTitleTextWidth) / 2, workExperienceTitleY);
 
