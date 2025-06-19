@@ -28,6 +28,13 @@ export function generatePDF() {
   const skillsFontSize = 14;
   const skillsYOffset = 0;
 
+  const workExperienceFontSize = 14;
+  const workExperienceYOffset = 0;
+  const workExperienceTitleFontSize = 16;
+  const workExperienceTitleYOffset = 5;
+  const workExperienceTitleLineYOffset = -10;
+  const workExperienceLineYOffset = 10;
+
   // Name
   const nameY = pageMarginY + nameFontSize + nameYOffset;
   doc.setFontSize(nameFontSize);
@@ -86,27 +93,67 @@ export function generatePDF() {
   // Skills list (languages, frameworks, tools)
   const skillsListY = skillsTitleY + skillsFontSize + skillsYOffset;
   doc.setFontSize(skillsFontSize);
-
-  const languagesLabel = "Languages: ";
   doc.setFont('helvetica', 'bold');
+  const languagesLabel = "Languages: ";
   const languagesLabelWidth = doc.getTextWidth(languagesLabel);
   doc.text(languagesLabel, pageMarginX, skillsListY);
   doc.setFont('helvetica', 'normal');
   doc.text(userInfo.skills.languages.join(', '), pageMarginX + languagesLabelWidth, skillsListY);
-  
+
   const frameworksLabel = "Frameworks: ";
   doc.setFont('helvetica', 'bold');
   const frameworksLabelWidth = doc.getTextWidth(frameworksLabel);
   doc.text(frameworksLabel, pageMarginX, skillsListY + lineSpacing);
   doc.setFont('helvetica', 'normal');
   doc.text(userInfo.skills.frameworks.join(', '), pageMarginX + frameworksLabelWidth, skillsListY + lineSpacing);
-  
+
   doc.setFont('helvetica', 'bold');
   const toolsLabel = "Tools: ";
   const toolsLabelWidth = doc.getTextWidth(toolsLabel);
   doc.text(toolsLabel, pageMarginX, skillsListY + 2 * lineSpacing);
   doc.setFont('helvetica', 'normal');
   doc.text(userInfo.skills.tools.join(', '), pageMarginX + toolsLabelWidth, skillsListY + 2 * lineSpacing);
+
+  // Work Experience title
+  const workExperienceTitleY = skillsListY + 3 * lineSpacing;
+  doc.setFontSize(skillsTitleFontSize);
+  doc.setFont('helvetica', 'bold');
+  const workExperienceTitleLabel = "Work Experience:";
+  doc.text(workExperienceTitleLabel, pageMarginX, workExperienceTitleY);
+
+  // Work Experience title line
+  const workExperienceTitleLineY = workExperienceTitleY + skillsFontSize + skillsTitleLineYOffset;
+  doc.setLineWidth(0.5);
+  doc.line(pageMarginX, workExperienceTitleLineY, pageWidth - pageMarginX, workExperienceTitleLineY);
+
+  // Work experience
+  let workExperienceY = workExperienceTitleLineY + workExperienceLineYOffset;
+  doc.setFontSize(workExperienceFontSize);
+  doc.setFont('helvetica', 'normal');
+  userInfo.workExperience.forEach((experience, index) => {
+    const companyLocation = `${experience.company}, ${experience.location}`;
+    const dateRange = `${experience.startDate} – ${experience.endDate}`;
+    let currentY = workExperienceY;
+    doc.text(companyLocation, pageMarginX, currentY);
+    doc.text(dateRange, pageWidth - pageMarginX - doc.getTextWidth(dateRange), currentY);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(experience.title, pageMarginX, currentY + lineSpacing);
+    doc.setFont('helvetica', 'normal');
+
+    let detailYOffset = currentY + 2 * lineSpacing;
+    experience.details.forEach((detail) => {
+      const wrappedDetails = doc.splitTextToSize(`• ${detail}`, pageWidth - pageMarginX - 20);
+      wrappedDetails.forEach((line, lineIndex) => {
+        const xOffset = lineIndex === 0 ? pageMarginX + 5 : pageMarginX + 8.1;
+        doc.text(line, xOffset, detailYOffset);
+        detailYOffset += lineSpacing;
+      });
+    });
+
+    // Update workExperienceY for the next experience
+    workExperienceY = detailYOffset + lineSpacing;
+  });
 
   return doc.output('datauristring');
 } 

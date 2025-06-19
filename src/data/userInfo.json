@@ -29,5 +29,33 @@
         "Cypress",
         "RESTful APIs"
     ]
-  }
+  },
+  "workExperience": [
+    {
+      "company": "Google",
+      "location": "San Francisco, CA",
+      "title": "Software Engineer",
+      "startDate": "May 2020",
+      "endDate": "May 2022",
+      "details": [
+        "Developed and maintained web applications using React and Node.js.",
+        "Developed and maintained web applications using React and Node.js.",
+        "Developed and maintained web applications using React and Node.js.",
+        "Collaborated with cross-functional teams to deliver high-quality software solutions.",
+        "Implemented new features and improved existing codebase."
+      ]
+    },
+    {
+      "company": "Facebook",
+      "location": "San Francisco, CA",
+      "title": "Software Engineer",
+      "startDate": "May 2022",
+      "endDate": "May 2024",
+      "details": [
+        "Developed and maintained web applications using React and Node.js. Developed and maintained web applications using React and Node.js. Developed and maintained web applications using React and Node.js.",
+        "Collaborated with cross-functional teams to deliver high-quality software solutions.",
+        "Implemented new features and improved existing codebase."
+      ]
+    }
+  ]
 } 
