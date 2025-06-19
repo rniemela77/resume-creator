@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>{{ message }}</h1>
-    <iframe id="pdf-frame" style="width:100%; height:500px; border:none;"></iframe>
+    <iframe id="pdf-frame" style="width:100%; height:700px; border:none;"></iframe>
   </div>
 </template>
 
