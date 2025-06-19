@@ -5,7 +5,8 @@ const pageMarginX = 10;
 const sectionTitleSize = 18;
 
 const randomizeLengthOfString = (string) => {
-  const fullFakeString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  const fullFakeString =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sunt in culpa qui officia deserunt mollit anim id est laborum.";
   const randomLength = Math.floor(Math.random() * 300) + 10; // 1-100
   return fullFakeString.slice(0, randomLength);
 };
@@ -83,42 +84,43 @@ export function generatePDF() {
     doc.text(
       line,
       (pageWidth - lineWidth) / 2,
-      summaryY + lineSpacing + (index * lineSpacing)
+      summaryY + lineSpacing + index * lineSpacing
     );
   });
 
   // Skills section
-  const skillsTitleY = summaryY + (summaryLines.length * lineSpacing) + lineSpacing + 5;
+  const skillsTitleY =
+    summaryY + summaryLines.length * lineSpacing + lineSpacing + 5;
   createSectionTitle(doc, "SKILLS", skillsTitleY, pageWidth);
   drawHorizontalLine(doc, skillsTitleY, pageWidth);
 
-  //   // Skills list (languages, frameworks, tools)
-  //   const skillsListY = skillsTitleY + skillsTitleSize + lineSpacing;
-  //   const languagesLabel = "Languages: ";
-  //   const languagesLabelWidth = doc.getTextWidth(languagesLabel);
-  //   doc.text(languagesLabel, pageMarginX, skillsListY);
-  //   doc.setFont('helvetica', 'normal');
-  //   doc.text(userInfo.skills.languages.join(', '), pageMarginX + languagesLabelWidth, skillsListY);
+  const skillsListY = skillsTitleY + 7;
+  const languagesLabel = "Languages: ";
+  doc.setFont("helvetica", "bold");
+  const languagesLabelWidth = doc.getTextWidth(languagesLabel);
+  doc.text(languagesLabel, pageMarginX, skillsListY + lineSpacing);
+  doc.setFont("helvetica", "normal");
+  doc.text(userInfo.skills.languages.join(", "), pageMarginX + languagesLabelWidth, skillsListY + lineSpacing);
 
-  //   const frameworksLabel = "Frameworks: ";
-  //   doc.setFont('helvetica', 'bold');
-  //   const frameworksLabelWidth = doc.getTextWidth(frameworksLabel);
-  //   doc.text(frameworksLabel, pageMarginX, skillsListY + lineSpacing);
-  //   doc.setFont('helvetica', 'normal');
-  //   doc.text(userInfo.skills.frameworks.join(', '), pageMarginX + frameworksLabelWidth, skillsListY + lineSpacing);
+  const frameworksLabel = "Frameworks: ";
+  doc.setFont("helvetica", "bold");
+  const frameworksLabelWidth = doc.getTextWidth(frameworksLabel);
+  doc.text(frameworksLabel, pageMarginX, skillsListY + 2 * lineSpacing);
+  doc.setFont("helvetica", "normal");
+  doc.text(
+    userInfo.skills.frameworks.join(", "),
+    pageMarginX + frameworksLabelWidth,
+    skillsListY + 2 * lineSpacing
+  );    
 
-  //   doc.setFont('helvetica', 'bold');
-  //   const toolsLabel = "Tools: ";
-  //   const toolsLabelWidth = doc.getTextWidth(toolsLabel);
-  //   doc.text(toolsLabel, pageMarginX, skillsListY + 2 * lineSpacing);
-  //   doc.setFont('helvetica', 'normal');
-  //   doc.text(userInfo.skills.tools.join(', '), pageMarginX + toolsLabelWidth, skillsListY + 2 * lineSpacing);
+  const toolsLabel = "Tools: ";
+  doc.setFont("helvetica", "bold");
+  const toolsLabelWidth = doc.getTextWidth(toolsLabel);
+  doc.text(toolsLabel, pageMarginX, skillsListY + 3 * lineSpacing);
+  doc.setFont("helvetica", "normal");
+  doc.text(userInfo.skills.tools.join(', '), pageMarginX + toolsLabelWidth, skillsListY + 3 * lineSpacing);
 
-  //   // Adjust the Y position for the next section after skills
-  //   const skillsListEndY = skillsListY + 3 * lineSpacing;
-
-  //   // Professional Experience section
-  //   const workExperienceTitleY = createSection(doc, 'PROFESSIONAL EXPERIENCE', skillsListY + 3 * lineOffset, pageWidth, pageMarginX, skillsTitleFontSize, lineOffset);
+    // Professional Experience section
 
   //   // Work experience
   //   let workExperienceY = workExperienceTitleY + workExperienceLineYOffset;
