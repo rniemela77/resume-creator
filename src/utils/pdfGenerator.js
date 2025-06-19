@@ -35,6 +35,9 @@ export function generatePDF() {
   const workExperienceTitleLineYOffset = -10;
   const workExperienceLineYOffset = 10;
 
+  const educationFontSize = 14;
+  const educationYOffset = -15;
+
   // Name
   const nameY = pageMarginY + nameFontSize + nameYOffset;
   doc.setFontSize(nameFontSize);
@@ -82,7 +85,7 @@ export function generatePDF() {
   doc.setFontSize(skillsTitleFontSize);
   doc.setFont('helvetica', 'bold');
   const skillsTitleTextWidth = doc.getTextWidth('Skills:');
-  doc.text('Skills:', (pageWidth - skillsTitleTextWidth) / 2, skillsTitleY);
+  doc.text('SKILLS', (pageWidth - skillsTitleTextWidth) / 2, skillsTitleY);
   doc.setFont('helvetica', 'normal');
 
   // Skills title line
@@ -118,8 +121,9 @@ export function generatePDF() {
   const workExperienceTitleY = skillsListY + 3 * lineSpacing;
   doc.setFontSize(skillsTitleFontSize);
   doc.setFont('helvetica', 'bold');
-  const workExperienceTitleLabel = "Work Experience:";
-  doc.text(workExperienceTitleLabel, pageMarginX, workExperienceTitleY);
+  const workExperienceTitleLabel = "WORK EXPERIENCE";
+  const workExperienceTitleTextWidth = doc.getTextWidth(workExperienceTitleLabel);
+  doc.text(workExperienceTitleLabel, (pageWidth - workExperienceTitleTextWidth) / 2, workExperienceTitleY);
 
   // Work Experience title line
   const workExperienceTitleLineY = workExperienceTitleY + skillsFontSize + skillsTitleLineYOffset;
@@ -154,6 +158,49 @@ export function generatePDF() {
     // Update workExperienceY for the next experience
     workExperienceY = detailYOffset + lineSpacing;
   });
+
+  // Education title
+  const educationTitleY = workExperienceY + 2 * lineSpacing + educationYOffset;
+  doc.setFontSize(skillsTitleFontSize);
+  doc.setFont('helvetica', 'bold');
+  const educationTitleLabel = "EDUCATION";
+  const educationTitleTextWidth = doc.getTextWidth(educationTitleLabel);
+  doc.text(educationTitleLabel, (pageWidth - educationTitleTextWidth) / 2, educationTitleY);
+
+  // Education title line
+  const educationTitleLineY = educationTitleY + skillsFontSize + skillsTitleLineYOffset;
+  doc.setLineWidth(0.5);
+  doc.line(pageMarginX, educationTitleLineY, pageWidth - pageMarginX, educationTitleLineY);
+
+  // Education details
+  doc.setFontSize(workExperienceFontSize);
+  doc.setFont('helvetica', 'normal');
+  let educationY = educationTitleLineY + workExperienceLineYOffset;
+  if (Array.isArray(userInfo.education)) {
+    userInfo.education.forEach((edu) => {
+      const institution = `${edu.institution}, ${edu.location}`;
+      const degree = `${edu.degree}`;
+      const date = `${edu.endDate}`;
+      doc.setFont('helvetica', 'normal');
+      doc.text(institution, pageMarginX, educationY);
+      doc.text(date, pageWidth - pageMarginX - doc.getTextWidth(date), educationY);
+      educationY += lineSpacing;
+      doc.setFont('helvetica', 'bold');
+      doc.text(degree, pageMarginX, educationY);
+      educationY += lineSpacing;
+      if (Array.isArray(edu.details)) {
+        edu.details.forEach((detail) => {
+          const wrappedDetails = doc.splitTextToSize(`• ${detail}`, pageWidth - pageMarginX - 20);
+          wrappedDetails.forEach((line, lineIndex) => {
+            const xOffset = lineIndex === 0 ? pageMarginX + 5 : pageMarginX + 10;
+            doc.text(line, xOffset, educationY);
+            educationY += lineSpacing;
+          });
+        });
+      }
+      educationY += lineSpacing;
+    });
+  }
 
   return doc.output('datauristring');
 } 

@@ -57,5 +57,14 @@
         "Implemented new features and improved existing codebase."
       ]
     }
+  ],
+  "education": [
+    {
+      "institution": "University of California",
+      "location": "Berkeley, CA",
+      "degree": "Bachelor of Science in Computer Science",
+      "startDate": "May 2018",
+      "endDate": "May 2022"
+    }
   ]
 } 
