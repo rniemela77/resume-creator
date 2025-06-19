@@ -38,6 +38,9 @@ export function generatePDF() {
   const educationFontSize = 14;
   const educationYOffset = -15;
 
+  const certificationsFontSize = 14;
+  const certificationsYOffset = -15;
+
   // Name
   const nameY = pageMarginY + nameFontSize + nameYOffset;
   doc.setFontSize(nameFontSize);
@@ -199,6 +202,35 @@ export function generatePDF() {
         });
       }
       educationY += lineSpacing;
+    });
+  }
+
+  // Certifications title
+  const certificationsTitleY = educationY + 2 * lineSpacing + educationYOffset;
+  doc.setFontSize(skillsTitleFontSize);
+  doc.setFont('helvetica', 'bold');
+  const certificationsTitleLabel = "CERTIFICATIONS";
+  const certificationsTitleTextWidth = doc.getTextWidth(certificationsTitleLabel);
+  doc.text(certificationsTitleLabel, (pageWidth - certificationsTitleTextWidth) / 2, certificationsTitleY);
+
+  // Certifications title line
+  const certificationsTitleLineY = certificationsTitleY + skillsFontSize + skillsTitleLineYOffset;
+  doc.setLineWidth(0.5);
+  doc.line(pageMarginX, certificationsTitleLineY, pageWidth - pageMarginX, certificationsTitleLineY);
+
+  // Certifications details
+  doc.setFontSize(workExperienceFontSize);
+  doc.setFont('helvetica', 'normal');
+  let certificationsY = certificationsTitleLineY + workExperienceLineYOffset;
+  if (Array.isArray(userInfo.certifications)) {
+    userInfo.certifications.forEach((cert) => {
+      const certDetails = `${cert.name}, ${cert.institution}`;
+      const dateReceived = `${cert.dateReceived}`;
+      doc.setFont('helvetica', 'bold');
+      doc.text(certDetails, pageMarginX, certificationsY);
+      doc.setFont('helvetica', 'normal');
+      doc.text(dateReceived, pageWidth - pageMarginX - doc.getTextWidth(dateReceived), certificationsY);
+      certificationsY += lineSpacing;
     });
   }
 
